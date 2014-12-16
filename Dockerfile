@@ -10,5 +10,7 @@ run mv /etc/nginx/nginx.conf /tmp/ &&\
     rm /tmp/nginx.conf
 
 add stdout.conf /etc/nginx/conf.d/
- 
+
+expose 80
+
 cmd /etc/init.d/nginx start
