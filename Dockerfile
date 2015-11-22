@@ -1,4 +1,4 @@
-from deliverous/wheezy
+from debian
 run apt-get update && \
     apt-get install -y --no-install-recommends nginx && \
     apt-get clean
