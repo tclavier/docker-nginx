@@ -1,4 +1,6 @@
 from debian
+env DEBIAN_FRONTEND noninteractive
+run sed -e 's/httpredir.debian.org/debian.mirrors.ovh.net/g' -i /etc/apt/sources.list
 run apt-get update && \
     apt-get install -y --no-install-recommends nginx && \
     apt-get clean
