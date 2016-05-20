@@ -6,7 +6,7 @@ then
   then
     letsencrypt renew
   else
-    letsencrypt certonly --staging --noninteractive --standalone -d $TLS_DOMAIN --agree-tos --email $TLS_EMAIL
+    letsencrypt certonly --noninteractive --standalone -d $TLS_DOMAIN --agree-tos --email $TLS_EMAIL
   fi
 fi
 exec /etc/init.d/nginx start
