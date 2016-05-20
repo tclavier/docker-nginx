@@ -1,0 +1,12 @@
+#!/bin/bash
+set -e -x
+if [ -n $TLS_DOMAIN ]
+then
+  if [ -d /etc/letsencrypt/archive ] 
+  then
+    echo "renew"
+  else
+    letsencrypt certonly --staging --noninteractive --standalone -d $TLS_DOMAIN --agree-tos --email $TLS_EMAIL
+  fi
+fi
+exec /etc/init.d/nginx start

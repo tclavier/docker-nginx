@@ -1,8 +1,8 @@
-from debian
+from debian:stretch
 env DEBIAN_FRONTEND noninteractive
 run sed -e 's/httpredir.debian.org/debian.mirrors.ovh.net/g' -i /etc/apt/sources.list
 run apt-get update && \
-    apt-get install -y --no-install-recommends nginx && \
+    apt-get install -y --no-install-recommends nginx letsencrypt && \
     apt-get clean
 
 run mv /etc/nginx/nginx.conf /tmp/ &&\
@@ -12,7 +12,9 @@ run mv /etc/nginx/nginx.conf /tmp/ &&\
     rm /tmp/nginx.conf
 
 add stdout.conf /etc/nginx/conf.d/
+add start /usr/local/bin/start
+run chmod +x /usr/local/bin/start
 
 expose 80
 
-cmd /etc/init.d/nginx start
+cmd ["/usr/local/bin/start"]
