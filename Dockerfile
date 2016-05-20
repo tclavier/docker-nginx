@@ -15,6 +15,6 @@ add stdout.conf /etc/nginx/conf.d/
 add start /usr/local/bin/start
 run chmod +x /usr/local/bin/start
 
-expose 80
+expose 80 443
 
 cmd ["/usr/local/bin/start"]
