@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e -x
-if [ -n $TLS_DOMAIN ]
+if [ -n "$TLS_DOMAIN" ]
 then
   if [ -d /etc/letsencrypt/archive ] 
   then
