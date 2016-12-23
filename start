@@ -2,11 +2,20 @@
 set -e -x
 if [ -n "$TLS_DOMAIN" ]
 then
-  if [ -d /etc/letsencrypt/archive ] 
-  then
-    letsencrypt renew
-  else
-    letsencrypt certonly --noninteractive --standalone -d $TLS_DOMAIN --agree-tos --email $TLS_EMAIL
-  fi
+  TLS_DOMAINS=$TLS_DOMAIN
 fi
+
+if [ -n "$TLS_DOMAINS" ]
+then
+  for DOMAIN in $TLS_DOMAINS
+  do
+    if [ -d /etc/letsencrypt/archive/$DOMAIN ] 
+    then
+      letsencrypt renew
+    else
+      letsencrypt certonly --noninteractive --standalone -d $DOMAIN --agree-tos --email $TLS_EMAIL
+    fi
+  done
+fi
+
 exec /etc/init.d/nginx start
