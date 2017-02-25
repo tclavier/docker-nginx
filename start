@@ -20,8 +20,12 @@ then
     LAST_CMD=$(cat /etc/letsencrypt/$FIRST_DOMAIN.cmd) 
     if [ "$LAST_CMD" != "$CMD" ]
     then
-      find /etc/letsencrypt/ -name $FIRST_DOMAIN -exec rm -rf {} \;
+      rm -rf /etc/letsencrypt/archive/$FIRST_DOMAIN
+      rm -rf /etc/letsencrypt/live/$FIRST_DOMAIN
     fi
+  else 
+    rm -rf /etc/letsencrypt/archive/$FIRST_DOMAIN
+    rm -rf /etc/letsencrypt/live/$FIRST_DOMAIN
   fi
   
   if [ -d /etc/letsencrypt/archive/$FIRST_DOMAIN ] 
