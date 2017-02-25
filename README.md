@@ -1,7 +1,10 @@
 # docker-nginx
 Nginx debian base Docker container with letsencrypt support.
 
-If `TLS_DOMAINS` env is set, it launch letsencrypt for `TLS_DOMAINS` at startup with `TLS_EMAIL` as contact. Be careful to mount `/etc/letsencrypt` as volume to not loose your certificates.
+If `TLS_DOMAINS` env is set, it launch letsencrypt for all domains in `TLS_DOMAINS` at startup with `TLS_EMAIL` as contact. 
+Be careful to mount `/etc/letsencrypt` as volume to not loose your certificates.
+
+In `TLS_DOMAINS` you should separate domains by space. The first mentioned domain in `TLS_DOMAINS` will be used to save certificate. [Certbot](https://github.com/certbot/certbot) will save a multi-domains certificate in `/etc/letsencrypt/archive/FIRST_DOMAIN`
 
 To use your letsencrypt certificats you can update your virtual host configuration with : 
 

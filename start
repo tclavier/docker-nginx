@@ -7,15 +7,31 @@ fi
 
 if [ -n "$TLS_DOMAINS" ]
 then
+  FIRST_DOMAIN=$(echo $TLS_DOMAINS | cut -f 1 -d ' ')
+  OPTS=""
   for DOMAIN in $TLS_DOMAINS
   do
-    if [ -d /etc/letsencrypt/archive/$DOMAIN ] 
-    then
-      letsencrypt renew
-    else
-      letsencrypt certonly --noninteractive --standalone -d $DOMAIN --agree-tos --email $TLS_EMAIL
-    fi
+    OPTS="$OPTS -d $DOMAIN"
   done
+  
+  CMD="certbot certonly --noninteractive --standalone $OPTS --agree-tos --email $TLS_EMAIL"
+  if [ -f /etc/letsencrypt/$FIRST_DOMAIN.cmd ]
+  then
+    LAST_CMD=$(cat /etc/letsencrypt/$FIRST_DOMAIN.cmd) 
+    if [ "$LAST_CMD" != "$CMD" ]
+    then
+      find /etc/letsencrypt/ -name $FIRST_DOMAIN -exec rm -rf {} \;
+    fi
+  fi
+  
+  if [ -d /etc/letsencrypt/archive/$FIRST_DOMAIN ] 
+  then
+    certbot renew
+  else
+    $CMD
+    echo -n "$CMD" > /etc/letsencrypt/$FIRST_DOMAIN.cmd
+  fi
+
 fi
 
 exec /etc/init.d/nginx start
