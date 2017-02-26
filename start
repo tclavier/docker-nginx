@@ -5,35 +5,23 @@ then
   TLS_DOMAINS=$TLS_DOMAIN
 fi
 
+if [ $(find /etc/letsencrypt -name '*.cmd' | wc -l) -gt 0 ]
+then 
+  echo "Clean up old /etc/letsencrypt configuration"
+  rm -rf /etc/letsencrypt/*
+fi
+
 if [ -n "$TLS_DOMAINS" ]
 then
-  FIRST_DOMAIN=$(echo $TLS_DOMAINS | cut -f 1 -d ' ')
-  OPTS=""
   for DOMAIN in $TLS_DOMAINS
   do
-    OPTS="$OPTS -d $DOMAIN"
-  done
-  
-  CMD="certbot certonly --noninteractive --standalone $OPTS --agree-tos --email $TLS_EMAIL"
-  if [ -f /etc/letsencrypt/$FIRST_DOMAIN.cmd ]
-  then
-    LAST_CMD=$(cat /etc/letsencrypt/$FIRST_DOMAIN.cmd) 
-    if [ "$LAST_CMD" != "$CMD" ]
+    if [ -d /etc/letsencrypt/archive/$DOMAIN ] 
     then
-      rm -rf /etc/letsencrypt/*
+      certbot renew
+    else
+      certbot certonly --noninteractive --standalone -d $DOMAIN --agree-tos --email $TLS_EMAIL
     fi
-  else 
-    rm -rf /etc/letsencrypt/*
-  fi
-  
-  if [ -d /etc/letsencrypt/archive/$FIRST_DOMAIN ] 
-  then
-    certbot renew
-  else
-    $CMD
-    echo -n "$CMD" > /etc/letsencrypt/$FIRST_DOMAIN.cmd
-  fi
-
+  done
 fi
 
 (/etc/init.d/nginx configtest || cat /var/log/nginx/error.log)
