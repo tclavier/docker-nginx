@@ -9,6 +9,8 @@ In `TLS_DOMAINS` you should separate domains by space. For each domain mentioned
 
 To use your letsencrypt certificats you can update your virtual host configuration with : 
 
+      server_name DOMAIN;
       ssl_certificate      /etc/letsencrypt/live/DOMAIN/fullchain.pem;
       ssl_certificate_key  /etc/letsencrypt/live/DOMAIN/privkey.pem;
 
+Be careful with `server_name` and `ssl_certificate` order for SNI configuration.

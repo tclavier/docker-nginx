@@ -1,4 +1,4 @@
-from debian:stretch
+from debian:testing
 env DEBIAN_FRONTEND noninteractive
 run sed -e 's/deb.debian.org/debian.mirrors.ovh.net/g' -i /etc/apt/sources.list
 run apt-get update && \
