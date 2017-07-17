@@ -1,6 +1,6 @@
 from debian:testing
 env DEBIAN_FRONTEND noninteractive
-run sed -e 's/deb.debian.org/debian.mirrors.ovh.net/g' -i /etc/apt/sources.list
+#run sed -e 's/deb.debian.org/debian.mirrors.ovh.net/g' -i /etc/apt/sources.list
 run apt-get update && \
     apt-get install -y --no-install-recommends nginx certbot && \
     apt-get clean
